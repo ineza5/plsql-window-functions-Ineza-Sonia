@@ -1,0 +1,61 @@
+## Report On Oracle Database Environment Assignment
+
+**Student: Ineza Sonia**
+**ID: 27852 Course: Advanced Database Management (PL/SQL AUCA)**
+**Assignment: Oracle Database Environment (CDBs, PDBs & OEM)**
+
+This assignment focused on creating and managing Container and Pluggable Databases (CDBs & PDBs) in Oracle 21c, 
+and setting up Oracle Enterprise Manager Express (OEM Express) for database monitoring and administration.
+
+Environment Setup Oracle Version: Oracle Database 21c Enterprise Edition
+
+### Task 1 — Create a Pluggable Database
+
+Connected as SYSDBA and verified root container.
+Created the PDB using:
+
+```
+CREATE PLUGGABLE DATABASE in_pdb_27852 
+ADMIN USER ineza_plsqlauca_27852 IDENTIFIED BY YourPassword 
+FILE_NAME_CONVERT = ( 'C:\home\oradata\ORCL\pdbseed', 'C:\home\oradata\ORCL\in_pdb_27852' );
+```
+
+Opened and saved state:
+
+```
+ALTER PLUGGABLE DATABASE in_pdb_27852 OPEN; ALTER PLUGGABLE DATABASE in_pdb_27852 SAVE STATE;
+```
+
+**Result: in_pdb_27852 created and opened successfully.**
+
+### Task 2 — Create and Delete a PDB
+
+Switched to the root container:
+
+```
+ALTER SESSION SET CONTAINER = CDB$ROOT;
+```
+
+Created another PDB with the required naming format:
+
+```
+CREATE PLUGGABLE DATABASE in_to_delete_pdb_27852 
+ADMIN USER in_admin_27852 IDENTIFIED BY YourPassword 
+FILE_NAME_CONVERT = ( 'pdbseed', 'in_to_delete_pdb_27852' );
+```
+
+Opened the new PDB and confirmed its status:
+
+```
+ALTER PLUGGABLE DATABASE in_to_delete_pdb_27852 OPEN; 
+SELECT name, open_mode FROM v$pdbs WHERE name = 'IN_TO_DELETE_PDB_27852';
+```
+
+Deleted the PDB after verification:
+
+```
+ALTER PLUGGABLE DATABASE in_to_delete_pdb_27852 CLOSE IMMEDIATE; 
+DROP PLUGGABLE DATABASE in_to_delete_pdb_27852 INCLUDING DATAFILES;
+```
+
+**PDB in_to_delete_pdb_27852 was successfully created, opened, verified, and deleted**
